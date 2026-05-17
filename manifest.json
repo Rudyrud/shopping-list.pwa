@@ -1,11 +1,11 @@
 {
   "name": "Lista de compras",
   "short_name": "Compras",
-  "start_url": "./",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
+  "theme_color": "#f4f7fb",
   "background_color": "#f4f7fb",
-  "theme_color": "#2563eb",
   "icons": [
     {
       "src": "icon-192.png",
