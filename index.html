@@ -301,6 +301,277 @@
     $('#themeBtn').addEventListener('click',()=>setTheme(currentTheme()==='dark'?'light':'dark'));
     window.addEventListener('scroll',()=>$('#topBtn').classList.toggle('show',window.scrollY>300));
     $('#topBtn').addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+    setTheme(currentTheme());
+    renderAll();
+  </script>
+</body>
+</html>      --bor:#334155;
+      --chip:#172554;
+      --shadow:0 6px 20px rgba(0,0,0,.25);
+      --btn-bg:#1e293b;
+      --btn-text:#f8fafc;
+      --btn-border:#475569;
+      --focus:#fbbf24;
+      --overlay:rgba(0,0,0,.7);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--txt)}
+    .wrap{max-width:1280px;margin:0 auto;padding:16px}
+    .header{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:flex-start;margin-bottom:16px}
+    h1{margin:0;font-size:30px;line-height:1.1}
+    .top-actions,.toolbar{display:flex;gap:8px;flex-wrap:wrap}
+    .top-actions{justify-content:flex-end}
+    .layout{display:grid;grid-template-columns:1.3fr .7fr;gap:16px}
+    @media (max-width:1100px){.layout{grid-template-columns:1fr}}
+    .card{background:var(--card);border:1px solid var(--bor);border-radius:18px;padding:14px;box-shadow:var(--shadow)}
+    .section{margin-top:14px}
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between}
+    .col{flex:1;min-width:180px}
+    .tiny{font-size:12px;color:var(--mut);margin-bottom:6px}
+    input,select,button{font:inherit;border-radius:12px;border:1px solid var(--btn-border);padding:10px 12px;background:var(--btn-bg);color:var(--btn-text);outline:none}
+    input,select{width:100%;background:var(--card);color:var(--txt)}
+    button{cursor:pointer;transition:transform .05s ease, box-shadow .15s ease, background .15s ease, color .15s ease, border-color .15s ease}
+    button:hover{box-shadow:0 2px 10px rgba(0,0,0,.08)}
+    button:active{transform:translateY(1px)}
+    button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+    button.primary{background:var(--pri);border-color:var(--pri);color:#fff}
+    button.good{background:var(--sec);border-color:var(--sec);color:#fff}
+    button.warn{background:var(--war);border-color:var(--war);color:#111827}
+    button.bad{background:var(--bad);border-color:var(--bad);color:#fff}
+    button.ghost{background:transparent;color:var(--txt)}
+    .pill{display:inline-block;padding:4px 8px;border-radius:999px;background:rgba(37,99,235,.12);color:var(--pri);font-size:12px;white-space:nowrap}
+    .chips{display:flex;flex-wrap:wrap;gap:8px}
+    .chip{padding:8px 10px;border:1px solid var(--bor);border-radius:999px;background:var(--chip);cursor:pointer;font-size:13px;white-space:nowrap;color:var(--txt)}
+    .chip.active{background:var(--pri);color:#fff;border-color:var(--pri)}
+    .hit{background:var(--war);color:#111827;padding:0 2px;border-radius:4px}
+    .items{display:grid;gap:10px}
+    .category{border:1px solid var(--bor);border-radius:14px;overflow:hidden;background:var(--card)}
+    .category h3{margin:0;padding:12px 14px;background:color-mix(in srgb,var(--chip) 75%,transparent);border-bottom:1px solid var(--bor);font-size:15px}
+    .category .items-inner{padding:10px 12px;display:grid;gap:10px}
+    .item{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;border:1px solid var(--bor);border-radius:14px;padding:12px;background:var(--card)}
+    .item .name{display:flex;align-items:center;gap:10px;font-weight:600;user-select:none}
+    .name span{cursor:pointer}
+    .selected{background:#dbeafe!important;outline:2px solid rgba(37,99,235,.45)}
+    .selected .name span{color:#0f172a}
+    .checkBox{width:20px;height:20px;accent-color:var(--pri);flex:0 0 auto}
+    .done{opacity:.58;text-decoration:line-through}
+    .modeBox{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .dot{width:10px;height:10px;border-radius:50%;background:var(--pri)}
+    .info{color:var(--mut);font-size:13px;margin-top:8px}
+    .footerbar{display:none}
+    #topBtn{position:fixed;right:16px;bottom:16px;z-index:999;display:none;border:none;border-radius:999px;width:52px;height:52px;font-size:20px;background:var(--pri);color:#fff;box-shadow:0 8px 22px rgba(0,0,0,.18)}
+    #topBtn.show{display:block}
+    .muted{color:var(--mut)}
+    .actions{display:flex;gap:8px;align-items:center}
+    .iconBtn{width:34px;height:34px;padding:0;display:inline-flex;align-items:center;justify-content:center;font-size:16px;line-height:1;font-weight:700}
+    .editBtn{background:var(--pri);border-color:var(--pri);color:#fff}
+    .deleteX{background:var(--bad);border-color:var(--bad);color:#fff}
+    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:var(--overlay);z-index:2000;padding:16px}
+    .modal.show{display:flex}
+    .modal-box{width:min(100%,420px);background:var(--card);border:1px solid var(--bor);border-radius:18px;padding:16px;box-shadow:var(--shadow)}
+    .modal-box h3{margin:0 0 8px}
+    .modal-actions{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;margin-top:14px}
+    .modal-msg{color:var(--mut);margin:10px 0 0}
+    .search-result{margin-top:10px;padding:10px 12px;border:1px solid var(--bor);border-radius:12px;background:var(--chip);cursor:pointer}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="header">
+      <div><h1>Lista de compras</h1></div>
+      <div class="top-actions">
+        <button id="themeBtn" class="ghost">Tema</button>
+        <button id="resetAppBtn" class="warn">Reiniciar app</button>
+      </div>
+    </div>
+
+    <div class="layout">
+      <div class="card">
+        <div class="section">
+          <div class="row">
+            <div class="col">
+              <div class="tiny">Categoria</div>
+              <select id="sectionSelect"></select>
+            </div>
+            <div class="col">
+              <div class="tiny">Número de itens na lista</div>
+              <div class="pill" id="itemCount">0 itens</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h3 style="margin:0 0 8px">Itens comuns</h3>
+          <div class="tiny">Clica num item para o adicionar à tua lista.</div>
+          <div class="chips" id="commonItems" style="margin-top:10px"></div>
+        </div>
+
+        <div class="section">
+          <div class="tiny">Pesquisa</div>
+          <input id="searchBox" placeholder="Pesquisar por nome..." />
+          <div id="searchResults"></div>
+        </div>
+
+        <div class="section">
+          <div class="row">
+            <div class="modeBox">
+              <span class="dot" id="modeDot"></span>
+              <strong id="modeText">Preparar lista</strong>
+            </div>
+            <span class="pill" id="selectedCount">0 selecionados</span>
+          </div>
+
+          <div class="toolbar" style="margin-top:10px">
+            <button id="startShoppingBtn" class="good">Iniciar compra</button>
+            <button id="backBtn">Voltar à lista</button>
+            <button id="clearListBtn" class="bad">🗑 Apagar lista</button>
+          </div>
+
+          <div class="info" id="shoppingInfo">Prepara a lista e marca os itens que queres levar.</div>
+        </div>
+
+        <div class="section">
+          <h3 style="margin:0 0 8px">Lista de compras</h3>
+          <div class="items" id="itemsList" style="margin-top:12px"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button id="topBtn" title="Voltar ao topo">↑</button>
+
+  <div class="modal" id="searchModal">
+    <div class="modal-box">
+      <h3>Item não encontrado</h3>
+      <div id="searchModalText" class="modal-msg"></div>
+      <div class="modal-actions">
+        <button id="searchNoBtn">Não</button>
+        <button id="searchYesBtn" class="primary">Sim</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="editModal">
+    <div class="modal-box">
+      <h3>Editar item</h3>
+      <div class="tiny">Altera o nome e confirma a categoria.</div>
+      <div class="section" style="margin-top:10px">
+        <div class="tiny">Nome</div>
+        <input id="editName" placeholder="Nome do item" />
+      </div>
+      <div class="section">
+        <div class="tiny">Categoria</div>
+        <select id="editCategory"></select>
+      </div>
+      <div class="modal-actions">
+        <button id="editCancelBtn">Cancelar</button>
+        <button id="editSaveBtn" class="primary">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="deleteModal">
+    <div class="modal-box">
+      <h3>Apagar lista</h3>
+      <div class="modal-msg">Queres mesmo apagar toda a lista?</div>
+      <div class="modal-actions">
+        <button id="deleteNoBtn">Cancelar</button>
+        <button id="deleteYesBtn" class="bad">Apagar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="resetModal">
+    <div class="modal-box">
+      <h3>Reiniciar app</h3>
+      <div class="modal-msg">Queres mesmo reiniciar a app? Isto vai repor apenas os dados temporários da lista de compras.</div>
+      <div class="modal-actions">
+        <button id="resetNoBtn">Cancelar</button>
+        <button id="resetYesBtn" class="bad">Reiniciar</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const COMMON_KEY='shopping_common_v1';
+    const TEMP_KEY='shopping_temp_v1';
+    const THEME_KEY='shopping_theme_v1';
+
+    const DEFAULT_COMMON={
+      'Frutas e legumes':['Maçã','Banana','Laranja','Pera','Uva','Kiwi','Limão','Lima','Melancia','Meloa','Morango','Framboesa','Mirtilo','Manga','Abacaxi','Abacate','Tomate','Pepino','Cenoura','Batata','Batata-doce','Cebola','Alho','Alface','Rúcula','Espinafres','Couve','Brócolos','Couve-flor','Beringela','Pimento','Abóbora','Courgette','Nabo','Beterraba','Rabanete','Feijão-verde','Ervilhas frescas','Milho','Salsa'],
+      'Talho':['Frango inteiro','Peito de frango','Coxas de frango','Pernas de frango','Carne picada','Bife de vaca','Febras de porco','Lombinho de porco','Entrecosto','Costeletas','Hambúrgueres','Salsichas frescas','Salsichas de churrasco','Peru fatiado','Fiambre','Presunto','Chouriço','Linguiça','Bacon','Almôndegas'],
+      'Mercearia':['Arroz','Massa espiral','Massa esparguete','Massa penne','Feijão encarnado','Feijão preto','Grão-de-bico','Lentilhas','Azeite','Óleo','Sal','Açúcar','Farinha','Atum em lata','Tomate pelado','Polpa de tomate','Cereais','Aveia','Café','Chá','Bolachas','Vinagre','Maionese','Ketchup','Mostarda'],
+      'Laticínios':['Leite meio-gordo','Leite gordo','Leite magro','Iogurte natural','Iogurte grego','Queijo flamengo','Queijo fresco','Queijo ralado','Manteiga','Margarina','Natas','Skyr','Kefir'],
+      'Congelados':['Pizzas','Legumes congelados','Ervilhas congeladas','Batatas fritas','Hambúrgueres congelados','Nuggets','Peixe panado','Camarão congelado','Lasanha','Rissóis','Gelado de baunilha','Fruta congelada'],
+      'Limpeza':['Detergente da loiça','Detergente da roupa','Amaciador','Lixívia','Limpador multiusos','Limpa vidros','Desinfetante','Esponjas','Saco do lixo','Papel de cozinha','Papel higiénico','Ambientador'],
+      'Higiene':['Shampoo','Condicionador','Gel de banho','Sabonete líquido','Pasta de dentes','Escova de dentes','Fio dental','Desodorizante','Creme de barbear','Lâminas de barbear','Toalhitas íntimas','Papel higiénico','Protetor solar'],
+      'Padaria':['Pão de forma','Papo-seco','Baguete','Broa de milho','Broa de Avintes','Pão alentejano','Pão de Mafra','Pão de centeio','Pão integral','Pão de mistura','Pão de alho','Pão com chouriço','Pão de queijo','Croissant','Croissant de chocolate','Bola de Berlim','Pastel de nata','Queque','Folar','Bolo de arroz']
+    };
+
+    const $=s=>document.querySelector(s);
+    const el={sectionSelect:$('#sectionSelect'),commonItems:$('#commonItems'),itemsList:$('#itemsList'),itemCount:$('#itemCount'),selectedCount:$('#selectedCount'),searchBox:$('#searchBox'),searchResults:$('#searchResults'),topBtn:$('#topBtn'),shoppingInfo:$('#shoppingInfo'),modeText:$('#modeText'),modeDot:$('#modeDot'),searchModal:$('#searchModal'),searchModalText:$('#searchModalText'),searchYesBtn:$('#searchYesBtn'),searchNoBtn:$('#searchNoBtn'),deleteModal:$('#deleteModal'),deleteYesBtn:$('#deleteYesBtn'),deleteNoBtn:$('#deleteNoBtn'),resetModal:$('#resetModal'),resetYesBtn:$('#resetYesBtn'),resetNoBtn:$('#resetNoBtn'),editModal:$('#editModal'),editName:$('#editName'),editCategory:$('#editCategory'),editSaveBtn:$('#editSaveBtn'),editCancelBtn:$('#editCancelBtn')};
+
+    const defaultTemp={section:'Mercearia',search:'',items:[],savedList:[],shoppingMode:false,editingSaved:false};
+    let common=mergeCommon(loadJSON(COMMON_KEY,{}),DEFAULT_COMMON);
+    let temp=loadJSON(TEMP_KEY,defaultTemp);
+    let idSeq=Math.max(0,...temp.items.map(x=>x.id||0),...temp.savedList.map(x=>x.id||0));
+    let pendingAddName='';
+    let editingId='';
+
+    function loadJSON(key,fallback){try{return JSON.parse(localStorage.getItem(key))||structuredClone(fallback)}catch(e){return structuredClone(fallback)}}
+    function mergeCommon(saved, defaults){const merged=structuredClone(saved||{}); for(const [category, items] of Object.entries(defaults)){if(!merged[category]) merged[category]=[...items]} return merged}
+    function saveCommon(){localStorage.setItem(COMMON_KEY,JSON.stringify(common))}
+    function saveTemp(){localStorage.setItem(TEMP_KEY,JSON.stringify(temp))}
+    function setTheme(theme){document.documentElement.setAttribute('data-theme',theme);localStorage.setItem(THEME_KEY,theme)}
+    function currentTheme(){return localStorage.getItem(THEME_KEY)||'light'}
+    function activeList(){return temp.shoppingMode ? temp.savedList : temp.items}
+    function norm(s){return (s||'').trim().toLowerCase()}
+    function allCommonItems(){return Object.values(common).flat()}
+    function currentCategoryList(){return common[temp.section] || []}
+    function escapeRegExp(text){return text.replace(/[.*+?^${}()|[]\\]/g, '\\$&')}
+    function highlightText(text, query){const q=query.trim(); if(!q) return text; const regex=new RegExp(escapeRegExp(q),'gi'); return text.replace(regex, match=>`<mark class="hit">${match}</mark>`)}
+    function searchAllItems(query){const q=norm(query); if(!q) return []; return Object.entries(common).flatMap(([category, items])=>items.filter(name=>norm(name).includes(q)).map(name=>({name,category})))}
+    function renderSections(){const secs=Object.keys(common); if(!secs.includes(temp.section)) temp.section=secs[0]; el.sectionSelect.innerHTML=secs.map(s=>`<option ${s===temp.section?'selected':''}>${s}</option>`).join(''); el.editCategory.innerHTML=secs.map(s=>`<option value="${s}">${s}</option>`).join('')}
+    function renderCommon(){const q=norm(temp.search); const list=currentCategoryList().slice().sort((a,b)=>a.localeCompare(b,'pt',{sensitivity:'base'})).filter(x=>!q || norm(x).includes(q)); const active=activeList(); el.commonItems.innerHTML=list.map(name=>{const isActive=active.find(x=>x.name===name); return `<button class="chip ${isActive?'active':''}" data-add="${name}" data-category="${temp.section}">${highlightText(name,temp.search)}</button>`}).join('')}
+    function renderSearchResults(){const q=temp.search.trim(); if(!q){el.searchResults.innerHTML=''; return;} const matches=searchAllItems(q); el.searchResults.innerHTML=matches.length ? matches.map(item=>`<div class="search-result" data-search-add="${item.name}" data-search-category="${item.category}">${item.name} <span class="muted">(${item.category})</span></div>`).join('') : '<div class="tiny muted" style="margin-top:8px">Sem resultados.</div>'}
+    function groupByCategory(list){const grouped={}; list.forEach(item=>{const c=item.category||'Outros'; (grouped[c]=grouped[c]||[]).push(item)}); return grouped}
+    function renderItems(){const list=activeList(); const count=list.length; el.itemCount.textContent=`${count} item${count===1?'':'s'}`; el.selectedCount.textContent=`${count} selecionado${count===1?'':'s'}`; const grouped=groupByCategory(list); const cats=Object.keys(grouped).sort((a,b)=>a.localeCompare(b,'pt',{sensitivity:'base'})); el.itemsList.innerHTML=cats.length ? cats.map(cat=>{const items=grouped[cat].slice().sort((a,b)=>a.name.localeCompare(b.name,'pt',{sensitivity:'base'})); return `<div class="category"><h3>${cat}</h3><div class="items-inner">${items.map(item=>`<div class="item ${item.selected?'selected':''} ${temp.shoppingMode&&item.done?'done':''}"><label class="name">${temp.shoppingMode ? `<input class="checkBox" type="checkbox" data-toggle-done="${item.id}" ${item.done?'checked':''}>` : ''}<span data-open-name="${item.id}">${item.name}</span></label><div class="actions"><button class="iconBtn editBtn" data-edit="${item.id}" title="Editar">✎</button><button class="iconBtn deleteX" data-del="${item.id}" title="Apagar">x</button></div></div>`).join('')}</div></div>`}).join('') : '<div class="muted">Não há itens nesta lista.</div>'}
+    function renderMode(){el.modeText.textContent=temp.shoppingMode ? (temp.editingSaved ? 'Editar lista guardada' : 'Modo de compra') : 'Preparar lista'; el.modeDot.style.background=temp.shoppingMode ? 'var(--sec)' : 'var(--pri)'; el.shoppingInfo.textContent=temp.shoppingMode ? 'Agora aparece o ✔️ para confirmares o que já tiraste da prateleira para o cesto.' : 'Prepara a lista e marca os itens que queres levar.'}
+    function renderAll(){renderSections(); renderCommon(); renderSearchResults(); renderItems(); renderMode(); el.searchBox.value=temp.search||''}
+    function syncSavedList(){temp.savedList=temp.items.filter(x=>x.selected).map(x=>({...x,done:false}))}
+    function addToShopping(name, category){const clean=(name||'').trim(); if(!clean) return; const targetCategory=category||temp.section; const list=activeList(); if(list.some(x=>norm(x.name)===norm(clean))) return; list.push({id:++idSeq,name:clean,category:targetCategory,selected:true,done:false}); temp.search=''; el.searchBox.value=''; if(temp.shoppingMode) syncSavedList(); saveTemp(); renderAll()}
+    function deleteItem(id){id=Number(id); temp.items=temp.items.filter(x=>x.id!==id); temp.savedList=temp.savedList.filter(x=>x.id!==id); saveTemp(); renderAll()}
+    function toggleDone(id){id=Number(id); const item=temp.savedList.find(x=>x.id===id); if(!item) return; item.done=!item.done; saveTemp(); renderAll()}
+    function startShopping(){temp.shoppingMode=true; temp.editingSaved=false; syncSavedList(); saveTemp(); renderAll()}
+    function backToPrepare(){temp.shoppingMode=false; temp.editingSaved=false; saveTemp(); renderAll()}
+    function openSearchModal(name){pendingAddName=name; el.searchModalText.textContent=`"${name}" não existe nos itens comuns. Queres adicioná-lo apenas aos itens comuns?`; el.searchModal.classList.add('show')}
+    function closeSearchModal(){pendingAddName=''; el.searchModal.classList.remove('show')}
+    function openDeleteModal(){el.deleteModal.classList.add('show')}
+    function closeDeleteModal(){el.deleteModal.classList.remove('show')}
+    function openResetModal(){el.resetModal.classList.add('show')}
+    function closeResetModal(){el.resetModal.classList.remove('show')}
+    function openEditModal(id){const item=activeList().find(x=>x.id===Number(id)); if(!item) return; editingId=item.id; el.editName.value=item.name; el.editCategory.value=item.category||temp.section; el.editModal.classList.add('show'); el.editName.focus()}
+    function closeEditModal(){editingId=''; el.editModal.classList.remove('show')}
+    function saveEdit(){const list=temp.shoppingMode ? temp.savedList : temp.items; const idx=list.findIndex(x=>x.id===Number(editingId)); if(idx===-1) return; const clean=el.editName.value.trim(); const cat=el.editCategory.value; if(!clean) return; const oldItem=list[idx]; const oldName=oldItem.name; const oldCategory=oldItem.category; list[idx]={...oldItem,name:clean,category:cat}; if(temp.shoppingMode){temp.savedList=temp.savedList.map(x=>x.id===Number(editingId)?{...x,name:clean,category:cat}:x)} else {temp.items=temp.items.map(x=>x.id===Number(editingId)?{...x,name:clean,category:cat}:x)} if(common[oldCategory]){common[oldCategory]=common[oldCategory].filter(v=>norm(v)!==norm(oldName))} if(!common[cat]) common[cat]=[]; if(!common[cat].some(v=>norm(v)===norm(clean))){common[cat].push(clean); common[cat].sort((a,b)=>a.localeCompare(b,'pt',{sensitivity:'base'}))} saveCommon(); saveTemp(); renderAll(); closeEditModal()}
+    document.addEventListener('click',e=>{const add=e.target.dataset.add, del=e.target.dataset.del, edit=e.target.dataset.edit, openName=e.target.dataset.openName, toggleDoneId=e.target.dataset.toggleDone, searchAdd=e.target.dataset.searchAdd; if(add!==undefined) addToShopping(add, e.target.dataset.category || temp.section); if(searchAdd!==undefined) addToShopping(searchAdd, e.target.dataset.searchCategory || temp.section); if(del!==undefined) deleteItem(del); if(edit!==undefined) openEditModal(edit); if(openName!==undefined && !temp.shoppingMode) addToShopping(openName, e.target.dataset.category || temp.section); if(toggleDoneId!==undefined) toggleDone(toggleDoneId); if(e.target.id==='startShoppingBtn') startShopping(); if(e.target.id==='backBtn') backToPrepare(); if(e.target.id==='clearListBtn') openDeleteModal(); if(e.target.id==='resetAppBtn'){ openResetModal(); }});
+    document.addEventListener('change',e=>{if(e.target.id==='sectionSelect'){temp.section=e.target.value; saveTemp(); renderAll()} if(e.target.dataset.toggleDone) toggleDone(e.target.dataset.toggleDone)});
+    document.addEventListener('input',e=>{if(e.target.id==='searchBox'){temp.search=e.target.value; renderAll()}});
+    document.addEventListener('keydown',e=>{if(e.target.id==='searchBox' && e.key==='Enter'){e.preventDefault(); const name=temp.search.trim(); if(!name) return; const exists=allCommonItems().some(x=>norm(x)===norm(name)); if(exists){ addToShopping(name, temp.section); } else { openSearchModal(name) }} if(e.key==='Escape'){closeSearchModal(); closeDeleteModal(); closeResetModal(); closeEditModal()}});
+    el.searchYesBtn.addEventListener('click',()=>{if(pendingAddName){const clean=pendingAddName.trim(); if(clean){const exists=currentCategoryList().some(x=>norm(x)===norm(clean)); if(!exists){common[temp.section].push(clean); common[temp.section].sort((a,b)=>a.localeCompare(b,'pt',{sensitivity:'base'})); temp.search=''; el.searchBox.value=''; saveCommon(); saveTemp(); renderAll()}}} closeSearchModal()});
+    el.searchNoBtn.addEventListener('click',()=>closeSearchModal());
+    el.deleteYesBtn.addEventListener('click',()=>{closeDeleteModal(); temp.items=[]; temp.savedList=[]; temp.shoppingMode=false; temp.editingSaved=false; saveTemp(); renderAll()});
+    el.deleteNoBtn.addEventListener('click',()=>closeDeleteModal());
+    el.resetYesBtn.addEventListener('click',()=>{closeResetModal(); localStorage.removeItem(TEMP_KEY); temp=structuredClone(defaultTemp); idSeq=0; renderAll()});
+    el.resetNoBtn.addEventListener('click',()=>closeResetModal());
+    el.editSaveBtn.addEventListener('click',saveEdit);
+    el.editCancelBtn.addEventListener('click',closeEditModal);
+    el.editModal.addEventListener('click',e=>{if(e.target===el.editModal) closeEditModal()});
+    el.searchModal.addEventListener('click',e=>{if(e.target===el.searchModal) closeSearchModal()});
+    el.deleteModal.addEventListener('click',e=>{if(e.target===el.deleteModal) closeDeleteModal()});
+    el.resetModal.addEventListener('click',e=>{if(e.target===el.resetModal) closeResetModal()});
+    $('#themeBtn').addEventListener('click',()=>setTheme(currentTheme()==='dark'?'light':'dark'));
+    window.addEventListener('scroll',()=>$('#topBtn').classList.toggle('show',window.scrollY>300));
+    $('#topBtn').addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
     if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('service-worker.js'));}
     setTheme(currentTheme());
     renderAll();
