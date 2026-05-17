@@ -121,7 +121,7 @@
               <select id="sectionSelect"></select>
             </div>
             <div class="col">
-              <div class="tiny">NÃºmero de itens na lista</div>
+              <div class="tiny">Número de itens na lista</div>
               <div class="pill" id="itemCount">0 itens</div>
             </div>
           </div>
@@ -129,7 +129,7 @@
 
         <div class="section">
           <h3 style="margin:0 0 8px">Itens comuns</h3>
-          <div class="tiny">Clica num item para o adicionar Ã  tua lista.</div>
+          <div class="tiny">Clica num item para o adicionar à  tua lista.</div>
           <div class="chips" id="commonItems" style="margin-top:10px"></div>
         </div>
 
@@ -150,7 +150,7 @@
 
           <div class="toolbar" style="margin-top:10px">
             <button id="startShoppingBtn" class="good">Iniciar compra</button>
-            <button id="backBtn">Voltar Ã  lista</button>
+            <button id="backBtn">Voltar à  lista</button>
             <button id="clearListBtn" class="bad">ðŸ—‘ Apagar lista</button>
           </div>
 
@@ -169,10 +169,10 @@
 
   <div class="modal" id="searchModal">
     <div class="modal-box">
-      <h3>Item nÃ£o encontrado</h3>
+      <h3>Item não encontrado</h3>
       <div id="searchModalText" class="modal-msg"></div>
       <div class="modal-actions">
-        <button id="searchNoBtn">NÃ£o</button>
+        <button id="searchNoBtn">Não</button>
         <button id="searchYesBtn" class="primary">Sim</button>
       </div>
     </div>
@@ -211,7 +211,7 @@
   <div class="modal" id="resetModal">
     <div class="modal-box">
       <h3>Reiniciar app</h3>
-      <div class="modal-msg">Queres mesmo reiniciar a app? Isto vai repor apenas os dados temporÃ¡rios da lista de compras.</div>
+      <div class="modal-msg">Queres mesmo reiniciar a app? Isto vai repor apenas os dados temporários da lista de compras.</div>
       <div class="modal-actions">
         <button id="resetNoBtn">Cancelar</button>
         <button id="resetYesBtn" class="bad">Reiniciar</button>
@@ -225,14 +225,14 @@
     const THEME_KEY='shopping_theme_v1';
 
     const DEFAULT_COMMON={
-      'Frutas e legumes':['MaÃ§Ã£','Banana','Laranja','Pera','Uva','Kiwi','LimÃ£o','Lima','Melancia','Meloa','Morango','Framboesa','Mirtilo','Manga','Abacaxi','Abacate','Tomate','Pepino','Cenoura','Batata','Batata-doce','Cebola','Alho','Alface','RÃºcula','Espinafres','Couve','BrÃ³colos','Couve-flor','Beringela','Pimento','AbÃ³bora','Courgette','Nabo','Beterraba','Rabanete','FeijÃ£o-verde','Ervilhas frescas','Milho','Salsa'],
-      'Talho':['Frango inteiro','Peito de frango','Coxas de frango','Pernas de frango','Carne picada','Bife de vaca','Febras de porco','Lombinho de porco','Entrecosto','Costeletas','HambÃºrgueres','Salsichas frescas','Salsichas de churrasco','Peru fatiado','Fiambre','Presunto','ChouriÃ§o','LinguiÃ§a','Bacon','AlmÃ´ndegas'],
-      'Mercearia':['Arroz','Massa espiral','Massa esparguete','Massa penne','FeijÃ£o encarnado','FeijÃ£o preto','GrÃ£o-de-bico','Lentilhas','Azeite','Ã“leo','Sal','AÃ§Ãºcar','Farinha','Atum em lata','Tomate pelado','Polpa de tomate','Cereais','Aveia','CafÃ©','ChÃ¡','Bolachas','Vinagre','Maionese','Ketchup','Mostarda'],
-      'LaticÃ­nios':['Leite meio-gordo','Leite gordo','Leite magro','Iogurte natural','Iogurte grego','Queijo flamengo','Queijo fresco','Queijo ralado','Manteiga','Margarina','Natas','Skyr','Kefir'],
-      'Congelados':['Pizzas','Legumes congelados','Ervilhas congeladas','Batatas fritas','HambÃºrgueres congelados','Nuggets','Peixe panado','CamarÃ£o congelado','Lasanha','RissÃ³is','Gelado de baunilha','Fruta congelada'],
-      'Limpeza':['Detergente da loiÃ§a','Detergente da roupa','Amaciador','LixÃ­via','Limpador multiusos','Limpa vidros','Desinfetante','Esponjas','Saco do lixo','Papel de cozinha','Papel higiÃ©nico','Ambientador'],
-      'Higiene':['Shampoo','Condicionador','Gel de banho','Sabonete lÃ­quido','Pasta de dentes','Escova de dentes','Fio dental','Desodorizante','Creme de barbear','LÃ¢minas de barbear','Toalhitas Ã­ntimas','Papel higiÃ©nico','Protetor solar'],
-      'Padaria':['PÃ£o de forma','Papo-seco','Baguete','Broa de milho','Broa de Avintes','PÃ£o alentejano','PÃ£o de Mafra','PÃ£o de centeio','PÃ£o integral','PÃ£o de mistura','PÃ£o de alho','PÃ£o com chouriÃ§o','PÃ£o de queijo','Croissant','Croissant de chocolate','Bola de Berlim','Pastel de nata','Queque','Folar','Bolo de arroz']
+      'Frutas e legumes':['Maçã','Banana','Laranja','Pera','Uva','Kiwi','Limão','Lima','Melancia','Meloa','Morango','Framboesa','Mirtilo','Manga','Abacaxi','Abacate','Tomate','Pepino','Cenoura','Batata','Batata-doce','Cebola','Alho','Alface','Rúcula','Espinafres','Couve','Brócolos','Couve-flor','Beringela','Pimento','Abóbora','Courgette','Nabo','Beterraba','Rabanete','Feijão-verde','Ervilhas frescas','Milho','Salsa'],
+      'Talho':['Frango inteiro','Peito de frango','Coxas de frango','Pernas de frango','Carne picada','Bife de vaca','Febras de porco','Lombinho de porco','Entrecosto','Costeletas','Hambúrgueres','Salsichas frescas','Salsichas de churrasco','Peru fatiado','Fiambre','Presunto','Chouriço','Linguiça','Bacon','Almôndegas'],
+      'Mercearia':['Arroz','Massa espiral','Massa esparguete','Massa penne','Feijão encarnado','Feijão preto','Grão-de-bico','Lentilhas','Azeite','Óleo','Sal','Açúcar','Farinha','Atum em lata','Tomate pelado','Polpa de tomate','Cereais','Aveia','Café','Chá¡','Bolachas','Vinagre','Maionese','Ketchup','Mostarda'],
+      'Laticínios':['Leite meio-gordo','Leite gordo','Leite magro','Iogurte natural','Iogurte grego','Queijo flamengo','Queijo fresco','Queijo ralado','Manteiga','Margarina','Natas','Skyr','Kefir'],
+      'Congelados':['Pizzas','Legumes congelados','Ervilhas congeladas','Batatas fritas','Hambúrgueres congelados','Nuggets','Peixe panado','Camarão congelado','Lasanha','Rissóis','Gelado de baunilha','Fruta congelada'],
+      'Limpeza':['Detergente da loiça','Detergente da roupa','Amaciador','Lixívia','Limpador multiusos','Limpa vidros','Desinfetante','Esponjas','Saco do lixo','Papel de cozinha','Papel higiénico','Ambientador'],
+      'Higiene':['Shampoo','Condicionador','Gel de banho','Sabonete líquido','Pasta de dentes','Escova de dentes','Fio dental','Desodorizante','Creme de barbear','Lâminas de barbear','Toalhitas Íntimas','Papel higiénico','Protetor solar'],
+      'Padaria':['Pão de forma','Papo-seco','Baguete','Broa de milho','Broa de Avintes','Pão alentejano','Pão de Mafra','Pão de centeio','Pão integral','Pão de mistura','Pão de alho','Pão com chouriço','Pão de queijo','Croissant','Croissant de chocolate','Bola de Berlim','Pastel de nata','Queque','Folar','Bolo de arroz']
     };
 
     const $=s=>document.querySelector(s);
@@ -271,7 +271,7 @@
     function toggleDone(id){id=Number(id); const item=temp.savedList.find(x=>x.id===id); if(!item) return; item.done=!item.done; saveTemp(); renderAll()}
     function startShopping(){temp.shoppingMode=true; temp.editingSaved=false; syncSavedList(); saveTemp(); renderAll()}
     function backToPrepare(){temp.shoppingMode=false; temp.editingSaved=false; saveTemp(); renderAll()}
-    function openSearchModal(name){pendingAddName=name; el.searchModalText.textContent=`"${name}" nÃ£o existe nos itens comuns. Queres adicionÃ¡-lo apenas aos itens comuns?`; el.searchModal.classList.add('show')}
+    function openSearchModal(name){pendingAddName=name; el.searchModalText.textContent=`"${name}" não existe nos itens comuns. Queres adicioná-lo apenas aos itens comuns?`; el.searchModal.classList.add('show')}
     function closeSearchModal(){pendingAddName=''; el.searchModal.classList.remove('show')}
     function openDeleteModal(){el.deleteModal.classList.add('show')}
     function closeDeleteModal(){el.deleteModal.classList.remove('show')}
