@@ -151,7 +151,7 @@
           <div class="toolbar" style="margin-top:10px">
             <button id="startShoppingBtn" class="good">Iniciar compra</button>
             <button id="backBtn">Voltar à  lista</button>
-            <button id="clearListBtn" class="bad">ðŸ—‘ Apagar lista</button>
+            <button id="clearListBtn" class="bad">🗑 Apagar lista</button>
           </div>
 
           <div class="info" id="shoppingInfo">Prepara a lista e marca os itens que queres levar.</div>
@@ -165,7 +165,7 @@
     </div>
   </div>
 
-  <button id="topBtn" title="Voltar ao topo">â†‘</button>
+  <button id="topBtn" title="Voltar ao topo">↑</button>
 
   <div class="modal" id="searchModal">
     <div class="modal-box">
@@ -262,7 +262,7 @@
     function renderCommon(){const q=norm(temp.search); const list=currentCategoryList().slice().sort((a,b)=>a.localeCompare(b,'pt',{sensitivity:'base'})).filter(x=>!q || norm(x).includes(q)); const active=activeList(); el.commonItems.innerHTML=list.map(name=>{const isActive=active.find(x=>x.name===name); return `<button class="chip ${isActive?'active':''}" data-add="${name}" data-category="${temp.section}">${highlightText(name,temp.search)}</button>`}).join('')}
     function renderSearchResults(){const q=temp.search.trim(); if(!q){el.searchResults.innerHTML=''; return;} const matches=searchAllItems(q); el.searchResults.innerHTML=matches.length ? matches.map(item=>`<div class="search-result" data-search-add="${item.name}" data-search-category="${item.category}">${item.name} <span class="muted">(${item.category})</span></div>`).join('') : '<div class="tiny muted" style="margin-top:8px">Sem resultados.</div>'}
     function groupByCategory(list){const grouped={}; list.forEach(item=>{const c=item.category||'Outros'; (grouped[c]=grouped[c]||[]).push(item)}); return grouped}
-    function renderItems(){const list=activeList(); const count=list.length; el.itemCount.textContent=`${count} item${count===1?'':'s'}`; el.selectedCount.textContent=`${count} selecionado${count===1?'':'s'}`; const grouped=groupByCategory(list); const cats=Object.keys(grouped).sort((a,b)=>a.localeCompare(b,'pt',{sensitivity:'base'})); el.itemsList.innerHTML=cats.length ? cats.map(cat=>{const items=grouped[cat].slice().sort((a,b)=>a.name.localeCompare(b.name,'pt',{sensitivity:'base'})); return `<div class="category"><h3>${cat}</h3><div class="items-inner">${items.map(item=>`<div class="item ${item.selected?'selected':''} ${temp.shoppingMode&&item.done?'done':''}"><label class="name">${temp.shoppingMode ? `<input class="checkBox" type="checkbox" data-toggle-done="${item.id}" ${item.done?'checked':''}>` : ''}<span data-open-name="${item.id}">${item.name}</span></label><div class="actions"><button class="iconBtn editBtn" data-edit="${item.id}" title="Editar">âœŽ</button><button class="iconBtn deleteX" data-del="${item.id}" title="Apagar">x</button></div></div>`).join('')}</div></div>`}).join('') : '<div class="muted">NÃ£o hÃ¡ itens nesta lista.</div>'}
+    function renderItems(){const list=activeList(); const count=list.length; el.itemCount.textContent=`${count} item${count===1?'':'s'}`; el.selectedCount.textContent=`${count} selecionado${count===1?'':'s'}`; const grouped=groupByCategory(list); const cats=Object.keys(grouped).sort((a,b)=>a.localeCompare(b,'pt',{sensitivity:'base'})); el.itemsList.innerHTML=cats.length ? cats.map(cat=>{const items=grouped[cat].slice().sort((a,b)=>a.name.localeCompare(b.name,'pt',{sensitivity:'base'})); return `<div class="category"><h3>${cat}</h3><div class="items-inner">${items.map(item=>`<div class="item ${item.selected?'selected':''} ${temp.shoppingMode&&item.done?'done':''}"><label class="name">${temp.shoppingMode ? `<input class="checkBox" type="checkbox" data-toggle-done="${item.id}" ${item.done?'checked':''}>` : ''}<span data-open-name="${item.id}">${item.name}</span></label><div class="actions"><button class="iconBtn editBtn" data-edit="${item.id}" title="Editar">✏️ </button><button class="iconBtn deleteX" data-del="${item.id}" title="Apagar">x</button></div></div>`).join('')}</div></div>`}).join('') : '<div class="muted">NÃ£o hÃ¡ itens nesta lista.</div>'}
     function renderMode(){el.modeText.textContent=temp.shoppingMode ? (temp.editingSaved ? 'Editar lista guardada' : 'Modo de compra') : 'Preparar lista'; el.modeDot.style.background=temp.shoppingMode ? 'var(--sec)' : 'var(--pri)'; el.shoppingInfo.textContent=temp.shoppingMode ? 'Agora aparece o âœ”ï¸ para confirmares o que jÃ¡ tiraste da prateleira para o cesto.' : 'Prepara a lista e marca os itens que queres levar.'}
     function renderAll(){renderSections(); renderCommon(); renderSearchResults(); renderItems(); renderMode(); el.searchBox.value=temp.search||''}
     function syncSavedList(){temp.savedList=temp.items.filter(x=>x.selected).map(x=>({...x,done:false}))}
