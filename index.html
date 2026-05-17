@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lista de Compras PWA</title>
+  <meta name="theme-color" content="#2ecc71">
+  <link rel="manifest" href="manifest.json">
+  <style>
+    body{font-family:system-ui,sans-serif;background:#f5f7fa;margin:0;padding:24px;color:#222}
+    .card{max-width:720px;margin:auto;background:#fff;border-radius:16px;padding:20px;box-shadow:0 8px 30px rgba(0,0,0,.08)}
+    h1{margin-top:0}
+    input,button{padding:12px;font-size:16px;border-radius:10px;border:1px solid #ccc}
+    button{background:#2ecc71;color:#fff;border:none;cursor:pointer}
+    ul{padding-left:20px}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Lista de Compras</h1>
+    <input id="item" placeholder="Adicionar item">
+    <button onclick="addItem()">Adicionar</button>
+    <ul id="list"></ul>
+  </div>
+  <script>
+    const list = document.getElementById('list');
+    function addItem(){
+      const input = document.getElementById('item');
+      const text = input.value.trim();
+      if(!text) return;
+      const li = document.createElement('li');
+      li.textContent = text;
+      list.appendChild(li);
+      input.value = '';
+      save();
+    }
+    function save(){
+      localStorage.setItem('shopping-list', JSON.stringify([...list.children].map(x=>x.textContent)));
+    }
+    const saved = JSON.parse(localStorage.getItem('shopping-list')||'[]');
+    saved.forEach(text=>{
+      const li = document.createElement('li');
+      li.textContent = text;
+      list.appendChild(li);
+    });
+    if('serviceWorker' in navigator){
+      navigator.serviceWorker.register('service-worker.js');
+    }
+  </script>
+</body>
+</html>
