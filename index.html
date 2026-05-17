@@ -3,49 +3,103 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Lista de Compras PWA</title>
   <meta name="theme-color" content="#2ecc71">
+  <title>Lista de Compras PWA</title>
   <link rel="manifest" href="manifest.json">
   <style>
-    body{font-family:system-ui,sans-serif;background:#f5f7fa;margin:0;padding:24px;color:#222}
-    .card{max-width:720px;margin:auto;background:#fff;border-radius:16px;padding:20px;box-shadow:0 8px 30px rgba(0,0,0,.08)}
-    h1{margin-top:0}
-    input,button{padding:12px;font-size:16px;border-radius:10px;border:1px solid #ccc}
-    button{background:#2ecc71;color:#fff;border:none;cursor:pointer}
-    ul{padding-left:20px}
+    :root{--bg:#0f172a;--card:#111827;--muted:#94a3b8;--line:#1f2937;--accent:#2ecc71;--accent2:#22c55e}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#0b1220,#111827);color:#e5e7eb;min-height:100vh}
+    .wrap{max-width:920px;margin:0 auto;padding:20px}
+    .hero{background:radial-gradient(circle at top right, rgba(46,204,113,.25), transparent 30%), linear-gradient(180deg, rgba(17,24,39,.96), rgba(17,24,39,.85)); border:1px solid var(--line); border-radius:24px; padding:24px; box-shadow:0 20px 60px rgba(0,0,0,.35)}
+    h1{margin:0 0 6px;font-size:clamp(28px,4vw,44px)}
+    p{margin:0;color:var(--muted)}
+    .grid{display:grid;grid-template-columns:1.2fr .8fr;gap:18px;margin-top:18px}
+    .card{background:rgba(17,24,39,.92);border:1px solid var(--line);border-radius:20px;padding:18px}
+    .row{display:flex;gap:10px;flex-wrap:wrap}
+    input,button{border-radius:14px;border:1px solid var(--line);background:#0b1220;color:#e5e7eb;padding:14px 16px;font-size:16px}
+    input{flex:1;min-width:220px;outline:none}
+    button{cursor:pointer;background:linear-gradient(180deg,var(--accent),var(--accent2));border:none;font-weight:700}
+    button.secondary{background:#0b1220;border:1px solid var(--line);font-weight:600}
+    ul{list-style:none;padding:0;margin:16px 0 0}
+    li{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px;border:1px solid var(--line);border-radius:14px;margin-bottom:10px;background:#0b1220}
+    .done{text-decoration:line-through;color:var(--muted)}
+    .pill{font-size:12px;padding:6px 10px;border-radius:999px;background:rgba(46,204,113,.12);color:#86efac;border:1px solid rgba(46,204,113,.25)}
+    .muted{color:var(--muted)}
+    .stats{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
+    .stat{padding:12px 14px;border-radius:16px;background:#0b1220;border:1px solid var(--line)}
+    .stat b{display:block;font-size:22px;color:#fff}
+    .footer{margin-top:14px;color:var(--muted);font-size:13px}
+    @media (max-width:760px){.grid{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>Lista de Compras</h1>
-    <input id="item" placeholder="Adicionar item">
-    <button onclick="addItem()">Adicionar</button>
-    <ul id="list"></ul>
+  <div class="wrap">
+    <section class="hero">
+      <div class="row" style="justify-content:space-between;align-items:flex-start">
+        <div>
+          <h1>Lista de Compras PWA</h1>
+          <p>Funciona offline, guarda localmente e pode ser instalada no Android.</p>
+        </div>
+        <span class="pill" id="status">Online</span>
+      </div>
+      <div class="grid">
+        <div class="card">
+          <div class="row">
+            <input id="itemInput" placeholder="Adicionar item, ex.: leite">
+            <button id="addBtn">Adicionar</button>
+            <button class="secondary" id="clearDoneBtn">Limpar concluídos</button>
+          </div>
+          <ul id="list"></ul>
+          <div class="footer">Dica: toca no item para marcar como concluído.</div>
+        </div>
+        <div class="card">
+          <div class="stats">
+            <div class="stat"><span class="muted">Itens</span><b id="countAll">0</b></div>
+            <div class="stat"><span class="muted">Pendentes</span><b id="countPending">0</b></div>
+            <div class="stat"><span class="muted">Concluídos</span><b id="countDone">0</b></div>
+          </div>
+          <div class="footer" style="margin-top:18px">Para publicar no GitHub Pages, basta enviar estes ficheiros e ativar Pages na branch main.</div>
+        </div>
+      </div>
+    </section>
   </div>
   <script>
-    const list = document.getElementById('list');
-    function addItem(){
-      const input = document.getElementById('item');
-      const text = input.value.trim();
-      if(!text) return;
-      const li = document.createElement('li');
-      li.textContent = text;
-      list.appendChild(li);
-      input.value = '';
-      save();
-    }
-    function save(){
-      localStorage.setItem('shopping-list', JSON.stringify([...list.children].map(x=>x.textContent)));
-    }
-    const saved = JSON.parse(localStorage.getItem('shopping-list')||'[]');
-    saved.forEach(text=>{
-      const li = document.createElement('li');
-      li.textContent = text;
-      list.appendChild(li);
-    });
-    if('serviceWorker' in navigator){
-      navigator.serviceWorker.register('service-worker.js');
-    }
+    const KEY='shopping-list-v2';
+    const listEl=document.getElementById('list');
+    const input=document.getElementById('itemInput');
+    const statusEl=document.getElementById('status');
+    let items=JSON.parse(localStorage.getItem(KEY)||'[]');
+    const save=()=>localStorage.setItem(KEY, JSON.stringify(items));
+    const render=()=>{
+      listEl.innerHTML='';
+      items.forEach((it, idx)=>{
+        const li=document.createElement('li');
+        const left=document.createElement('span');
+        left.textContent=it.text;
+        if(it.done) left.className='done';
+        li.appendChild(left);
+        const btn=document.createElement('button');
+        btn.className='secondary';
+        btn.textContent=it.done?'Desfazer':'Feito';
+        btn.onclick=()=>{items[idx].done=!items[idx].done; save(); render();};
+        li.onclick=(e)=>{if(e.target.tagName!=='BUTTON'){items[idx].done=!items[idx].done; save(); render();}};
+        li.appendChild(btn);
+        listEl.appendChild(li);
+      });
+      document.getElementById('countAll').textContent=items.length;
+      document.getElementById('countDone').textContent=items.filter(x=>x.done).length;
+      document.getElementById('countPending').textContent=items.filter(x=>!x.done).length;
+    };
+    const add=()=>{const text=input.value.trim(); if(!text) return; items.unshift({text, done:false}); input.value=''; save(); render();};
+    document.getElementById('addBtn').onclick=add;
+    input.addEventListener('keydown', e=>{if(e.key==='Enter') add();});
+    document.getElementById('clearDoneBtn').onclick=()=>{items=items.filter(x=>!x.done); save(); render();};
+    window.addEventListener('online', ()=>statusEl.textContent='Online');
+    window.addEventListener('offline', ()=>statusEl.textContent='Offline');
+    statusEl.textContent=navigator.onLine?'Online':'Offline';
+    render();
+    if('serviceWorker' in navigator) navigator.serviceWorker.register('service-worker.js');
   </script>
 </body>
 </html>
