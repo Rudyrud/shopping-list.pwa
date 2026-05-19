@@ -115,7 +115,7 @@
     <div class="header">
       <div><h1>Lista de compras</h1></div>
       <div class="top-actions">
-        <button id="themeBtn" class="ghost">Tema</button>
+        <button id="themeBtn" class="ghost" title="Alternar tema">🌙</button>
         <button id="resetAppBtn" class="warn">Reiniciar app</button>
       </div>
     </div>
@@ -306,10 +306,11 @@
     el.searchModal.addEventListener('click',e=>{if(e.target===el.searchModal) closeSearchModal()});
     el.deleteModal.addEventListener('click',e=>{if(e.target===el.deleteModal) closeDeleteModal()});
     el.resetModal.addEventListener('click',e=>{if(e.target===el.resetModal) closeResetModal()});
-    $('#themeBtn').addEventListener('click',()=>setTheme(currentTheme()==='dark'?'light':'dark'));
+    $('#themeBtn').addEventListener('click',()=>{const next=currentTheme()==='dark'?'light':'dark'; setTheme(next); $('#themeBtn').textContent=next==='dark'?'🌙':'☀️';});
     window.addEventListener('scroll',()=>$('#topBtn').classList.toggle('show',window.scrollY>300));
     $('#topBtn').addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
     setTheme(currentTheme());
+    $('#themeBtn').textContent=currentTheme()==='dark'?'🌙':'☀️';
     renderAll();
   </script>
 </body>
