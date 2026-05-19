@@ -137,7 +137,7 @@
 
         <div class="section">
           <h3 style="margin:0 0 8px">Itens comuns</h3>
-          <div class="tiny">Clica num item para o adicionar à  tua lista.</div>
+          <div class="tiny">Clica num item para o adicionar à tua lista.</div>
           <div class="chips" id="commonItems" style="margin-top:10px"></div>
         </div>
 
@@ -158,7 +158,7 @@
 
           <div class="toolbar" style="margin-top:10px">
             <button id="startShoppingBtn" class="good">Iniciar compra</button>
-            <button id="backBtn">Voltar à  lista</button>
+            <button id="backBtn">Voltar à lista</button>
             <button id="clearListBtn" class="bad">🗑 Apagar lista</button>
           </div>
 
@@ -228,19 +228,20 @@
   </div>
 
   <script>
+    const CACHE_NAME='lista-compras-v1';
     const COMMON_KEY='shopping_common_v1';
     const TEMP_KEY='shopping_temp_v1';
     const THEME_KEY='shopping_theme_v1';
 
     const DEFAULT_COMMON={
-      'Frutas e legumes':['Maçã','Banana','Laranja','Pera','Pêssego','Ameixa','Uva','Kiwi','Limão','Lima','Melancia','Meloa','Morango','Framboesa','Mirtilo','Manga','Abacaxi','Abacate','Tomate','Pepino','Cenoura','Batata','Batata-doce','Cebola','Alho','Alface','Rúcula','Espinafres','Couve','Brócolos','Couve-flor','Beringela','Pimento','Abóbora','Courgette','Nabo','Beterraba','Rabanete','Feijão-verde','Ervilhas frescas','Milho','Salsa'],
+      'Frutas e legumes':['Maçã','Banana','Laranja','Pera','Uva','Kiwi','Limão','Lima','Melancia','Meloa','Morango','Framboesa','Mirtilo','Manga','Abacaxi','Abacate','Tomate','Pepino','Cenoura','Batata','Batata-doce','Cebola','Alho','Alface','Rúcula','Espinafres','Couve','Brócolos','Couve-flor','Beringela','Pimento','Abóbora','Courgette','Nabo','Beterraba','Rabanete','Feijão-verde','Ervilhas frescas','Milho','Salsa'],
       'Talho':['Frango inteiro','Peito de frango','Coxas de frango','Pernas de frango','Carne picada','Bife de vaca','Febras de porco','Lombinho de porco','Entrecosto','Costeletas','Hambúrgueres','Salsichas frescas','Salsichas de churrasco','Peru fatiado','Fiambre','Presunto','Chouriço','Linguiça','Bacon'],
       'Mercearia':['Arroz','Massa espiral','Massa esparguete','Massa penne','Feijão encarnado','Feijão preto','Grão-de-bico','Lentilhas','Azeite','Óleo','Sal','Açúcar','Farinha','Atum em lata','Tomate pelado','Polpa de tomate','Cereais','Aveia','Café','Chá','Bolachas','Vinagre','Maionese','Ketchup','Mostarda'],
-      'Laticínios':['Leite meio-gordo','Leite gordo','Leite magro','Iogurte natural','Iogurte grego','Queijo flamengo','Queijo fresco','Queijo ralado','Queijo Terra Nostra','Vaca que Ri','Manteiga','Margarina','Natas','Skyr','Kefir'],
+      'Laticínios':['Leite meio-gordo','Leite gordo','Leite magro','Iogurte natural','Iogurte grego','Queijo flamengo','Queijo fresco','Queijo ralado','Manteiga','Margarina','Natas','Skyr','Kefir'],
       'Congelados':['Almôndegas','Pizzas','Legumes congelados','Ervilhas congeladas','Batatas fritas','Hambúrgueres congelados','Nuggets','Peixe panado','Camarão congelado','Lasanha','Rissóis','Gelado de baunilha','Fruta congelada'],
       'Limpeza':['Detergente da loiça','Detergente da roupa','Amaciador','Lixívia','Limpador multiusos','Limpa vidros','Desinfetante','Esponjas','Saco do lixo','Papel de cozinha','Papel higiénico','Ambientador'],
-      'Higiene':['Shampoo','Condicionador','Gel de banho','Sabonete líquido','Pasta de dentes','Escova de dentes','Fio dental','Desodorizante','Creme de barbear','Lâminas de barbear','Toalhitas Íntimas','Papel higiénico','Protetor solar'],
-      'Padaria':['Pão de forma','Papo-seco','Baguete','Biju','Broa de milho','Broa de Avintes','Pão alentejano','Pão de Mafra','Pão de centeio','Pão integral','Pão de mistura','Pão de alho','Pão de Rio Maior','Pão com chouriço','Pão de queijo','Croissant','Croissant de chocolate','Bola de Berlim','Pastel de nata','Queque','Folar','Bolo de arroz']
+      'Higiene':['Shampoo','Condicionador','Gel de banho','Sabonete líquido','Pasta de dentes','Escova de dentes','Fio dental','Desodorizante','Creme de barbear','Lâminas de barbear','Toalhitas íntimas','Papel higiénico','Protetor solar'],
+      'Padaria':['Pão de forma','Papo-seco','Baguete','Broa de milho','Broa de Avintes','Pão alentejano','Pão de Mafra','Pão de centeio','Pão integral','Pão de mistura','Pão de alho','Pão de Rio Maior','Pão com chouriço','Pão de queijo','Croissant','Croissant de chocolate','Bola de Berlim','Pastel de nata','Queque','Folar','Bolo de arroz']
     };
 
     const $=s=>document.querySelector(s);
@@ -263,7 +264,7 @@
     function norm(s){return (s||'').trim().toLowerCase()}
     function allCommonItems(){return Object.values(common).flat()}
     function currentCategoryList(){return common[temp.section] || []}
-    function escapeRegExp(text){return text.replace(/[.*+?^${}()|[]\\]/g, '\\$&')}
+    function escapeRegExp(text){return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}
     function highlightText(text, query){const q=query.trim(); if(!q) return text; const regex=new RegExp(escapeRegExp(q),'gi'); return text.replace(regex, match=>`<mark class="hit">${match}</mark>`)}
     function searchAllItems(query){const q=norm(query); if(!q) return []; return Object.entries(common).flatMap(([category, items])=>items.filter(name=>norm(name).includes(q)).map(name=>({name,category})))}
     function renderSections(){const secs=Object.keys(common); if(!secs.includes(temp.section)) temp.section=secs[0]; el.sectionSelect.innerHTML=secs.map(s=>`<option ${s===temp.section?'selected':''}>${s}</option>`).join(''); el.editCategory.innerHTML=secs.map(s=>`<option value="${s}">${s}</option>`).join('')}
