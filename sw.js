@@ -1,4 +1,4 @@
-const CACHE_NAME = 'lista-compras-v3';
+const CACHE_NAME = 'lista-compras-v4';
 const FILES_TO_CACHE = [
   '/shopping-list.pwa/',
   '/shopping-list.pwa/index.html',
